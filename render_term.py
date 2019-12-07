@@ -17,7 +17,7 @@ def draw(board):
                 print(' ', end='')
         print('')
     print('')
-    time.sleep(1)
+    time.sleep(2)
 
 
 def test():
