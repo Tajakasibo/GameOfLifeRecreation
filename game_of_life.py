@@ -5,16 +5,18 @@ import render_term
 X = 80
 Y = 50
 gameboard = []
-for y in range(Y):
-    gameboard.append([])
-    for x in range(X):
-        gameboard[y].append(random.getrandbits(1))
-
 gameboard_temp = []
-for y in range(Y):
-    gameboard_temp.append([])
-    for x in range(X):
-        gameboard_temp[y].append(0)
+
+def init_board(rand=True):
+    board = []
+    for y in range(Y):
+        board.append([])
+        for x in range(X):
+            if rand:
+                board[y].append(random.getrandbits(1))
+            else:
+                board[y].append(0)
+    return board
 
 def count_neighbors(x, y, board):
     count = 0
@@ -49,13 +51,19 @@ def calc_new_value(x, y, board):
         newvalue = 0
     return newvalue
 
-while True:
+def next_board(board):
+    board_next = init_board(rand=False)
     for y in range(Y):
         for x in range(X):
-            gameboard_temp[y][x] = calc_new_value(x, y, gameboard)
+            board_next[y][x] = calc_new_value(x, y, board)
+    return board_next
 
-    for y in range(Y):
-        for x in range(X):
-            gameboard[y][x] = gameboard_temp[y][x]
+def test():
+    gameboard = init_board(rand=True)
+    while True:
+        gameboard = next_board(gameboard)
+        render_term.draw(gameboard)
 
-    render_term.draw(gameboard)
+if __name__ == '__main__':
+    test()
+
